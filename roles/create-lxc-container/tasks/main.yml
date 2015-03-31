@@ -16,7 +16,7 @@
   command: lxc-start -n {{ CTR_NAME }} -d
   
 - name: Update container sshd_config
-  shell: chdir=/bin sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /var/lib/lxc/{{ CTR_NAME }}/etc/ssh/sshd_config
+  shell: chdir=/bin sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /var/lib/lxc/{{ CTR_NAME }}/rootfs/etc/ssh/sshd_config
 
 - name: Restart ssh on container
   command: lxc-attach -n {{ CTR_NAME }} -e -- service ssh restart
