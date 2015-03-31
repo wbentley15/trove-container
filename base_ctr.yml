@@ -1,8 +1,9 @@
 ---
 # This playbook deploys an LXC container. 
 
-- hosts: localhost
+- hosts: controller
   user: root
+  remote_user: root
   sudo: yes
   roles:
     - create-lxc-container

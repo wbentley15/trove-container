@@ -1,5 +1,12 @@
 # Here are variables related to the install
 
-CTR_NAME: infra1_test_container-01
-DISTRO: ubuntu
-BRMGMT_IP: 172.29.236.220
+OS_USERNAME: admin
+OS_PASSWORD: passwd
+OS_TENANT_NAME: admin
+OS_AUTH_URL: http://172.29.236.7:5000/v2.0
+MY_IP: 172.29.236.220
+INFRA_NODE: 172.29.236.7
+TROVE_PASS: passwd
+RABBIT_HOST: 172.29.236.7
+RABBIT_PASS: passwd
+NOVA_PASS: passwd
