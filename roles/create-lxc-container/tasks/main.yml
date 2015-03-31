@@ -1,0 +1,22 @@
+---
+
+- name: Create LXC container
+  command: lxc-create -n {{ CTR_NAME }} -t {{ DISTRO }}
+  
+- name: Copy LXC config additions
+  copy: src=add_config dest=/usr/share mode=0644
+  
+- name: Add additional network interface to container
+  shell: chdir=/usr/share cat /usr/share/add_config >> /var/lib/lxc/{{ CTR_NAME }}/config
+
+- name: Move interface file to container
+  template: src=management.cfg dest=/var/lib/lxc/{{ CTR_NAME }}/rootfs/etc/network/interfaces.d
+
+- name: Start LXC container
+  command: lxc-start -n {{ CTR_NAME }} -d
+  
+- name: Update container sshd_config
+  shell: chdir=/bin sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /var/lib/lxc/{{ CTR_NAME }}/etc/ssh/sshd_config
+
+- name: Restart ssh on container
+  command: lxc-attach -n {{ CTR_NAME }} -e -- service ssh restart

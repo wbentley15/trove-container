@@ -1,0 +1,13 @@
+---
+
+- name: Copy new sources.list file
+  copy: src=sources.list dest=/usr/share mode=0644
+
+- name: Backup orginial sources.list file
+  command: cp /etc/apt/sources.list /etc/apt/sources.list.bk
+   
+- name: Move new sources.list file into place
+  command: cp /usr/share/sources.list /etc/apt
+  
+- name: Update the repo list in apt
+  command: apt-get update

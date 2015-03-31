@@ -1,0 +1,50 @@
+---
+
+- name: Install additional packages
+  apt: name={{item}} state=present
+  with_items:
+   - python-trove
+   - python-troveclient
+   - python-glanceclient
+   - trove-common
+   - trove-api
+   - trove-taskmanager
+   - trove-conductor
+
+- name: Create Trove user
+  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }} 
+           user-create --name trove --pass {{ TROVE_PASS }}  
+  
+- name: Add admin role to Trove user
+  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }} 
+           user-role-add --user trove --tenant service --role admin  
+
+- name: Copy trove.conf file
+  template: src=trove.conf dest=/etc/trove
+  
+- name: Copy trove-taskmanager.conf file
+  template: src=trove-taskmanager.conf dest=/etc/trove
+  
+- name: Copy trove-conductor.conf file
+  template: src=trove-conductor.conf dest=/etc/trove
+  
+- name: Copy api-paste.ini file
+  template: src=api-paste.ini dest=/etc/trove
+  
+- name: Create Trove service
+  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }}
+           service-create --name trove --type database --description "OpenStack Database Service"
+
+- name: Create Trove endpoint
+  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }}
+           endpoint-create --service-id $(keystone service-list | awk '/ trove / {print $2}')
+           --publicurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
+           --internalurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
+           --adminurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
+           --region RegionOne
+
+- name: Create Trove cache folder
+  command: mkdir /var/cache/trove
+  
+- name: Change ownership of Trove cache folder
+  command: chown trove /var/cache/trove

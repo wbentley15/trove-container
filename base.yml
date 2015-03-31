@@ -1,0 +1,11 @@
+---
+# This playbook deploys components needed for nova-docker. 
+
+- hosts: container
+  user: root
+  remote_user: root
+  sudo: yes
+  roles:
+    - chg-ubuntu-repo
+    - install-trove
+    - restore-ubuntu-repo
