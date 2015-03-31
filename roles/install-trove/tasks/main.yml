@@ -37,7 +37,7 @@
 
 - name: Create Trove endpoint
   command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }}
-           endpoint-create --service-id $(keystone service-list | awk '/ trove / {print $2}')
+           endpoint-create --service-id trove
            --publicurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
            --internalurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
            --adminurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
