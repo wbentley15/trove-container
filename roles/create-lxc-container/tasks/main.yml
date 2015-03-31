@@ -12,6 +12,12 @@
 - name: Move interface file to container
   template: src=management.cfg dest=/var/lib/lxc/{{ CTR_NAME }}/rootfs/etc/network/interfaces.d
 
+- name: Copy container interface placeholder
+  copy: src=add_interfaces dest=/usr/share mode=0644
+  
+- name: Add additional network interface placeholder to container
+  shell: chdir=/usr/share cat /usr/share/add_interfaces >> /var/lib/lxc/{{ CTR_NAME }}/rootfs/etc/network/interfaces
+
 - name: Start LXC container
   command: lxc-start -n {{ CTR_NAME }} -d
   
