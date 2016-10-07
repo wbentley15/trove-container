@@ -2,7 +2,7 @@
 localhost ansible_connection=local
 
 [controller]
-172.29.236.2
+172.23.0.21
 
 [container]
-172.29.236.220
+172.23.8.77

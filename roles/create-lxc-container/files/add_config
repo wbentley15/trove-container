@@ -6,4 +6,4 @@ lxc.network.name = eth1
 lxc.start.auto = 1
 lxc.start.delay = 15
 lxc.group = onboot
-lxc.group = rpc
+lxc.group = openstack

@@ -11,14 +11,6 @@
    - trove-taskmanager
    - trove-conductor
 
-- name: Create Trove user
-  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }} 
-           user-create --name trove --pass {{ TROVE_PASS }}  
-  
-- name: Add admin role to Trove user
-  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }} 
-           user-role-add --user trove --tenant service --role admin  
-
 - name: Copy trove.conf file
   template: src=trove.conf dest=/etc/trove
   
@@ -30,18 +22,6 @@
   
 - name: Copy api-paste.ini file
   template: src=api-paste.ini dest=/etc/trove
-  
-- name: Create Trove service
-  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }}
-           service-create --name trove --type database --description "OpenStack Database Service"
-
-- name: Create Trove endpoint
-  command: keystone --os-username={{ OS_USERNAME }} --os-password={{ OS_PASSWORD }} --os-tenant-name={{ OS_TENANT_NAME }} --os-auth-url={{ OS_AUTH_URL }}
-           endpoint-create --service-id trove
-           --publicurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
-           --internalurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
-           --adminurl http://{{ INFRA_NODE }}:8779/v1.0/%\(tenant_id\)s
-           --region RegionOne
 
 - name: Create Trove cache folder
   command: mkdir /var/cache/trove

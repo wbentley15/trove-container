@@ -1,5 +1,5 @@
 # Here are variables related to the install
 
-CTR_NAME: infra1_test_container-01
+CTR_NAME: infra1_trove_container-01
 DISTRO: ubuntu
-BRMGMT_IP: 172.29.236.220
+BRMGMT_IP: 172.23.11.248
